@@ -39,7 +39,11 @@ module Bamboozled
               if response.body.to_s.empty?
                 {"headers" => response.headers}.with_indifferent_access
               else
-                JSON.parse(response.body).with_indifferent_access
+                # https://github.com/Skookum/bamboozled/issues/5
+                # https://github.com/gorenje/bamboozled/commit/d478a86e723a138aaf7219891cc5900af5e10c68
+                # JSON.parse(response.body).with_indifferent_access
+                respobj = JSON.parse(response)
+                respobj.try(:with_indifferent_access) || respobj
               end
             rescue
               MultiXml.parse(response, symbolize_keys: true)
