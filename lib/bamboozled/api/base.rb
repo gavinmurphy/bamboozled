@@ -46,7 +46,7 @@ module Bamboozled
                 respobj.try(:with_indifferent_access) || respobj
               end
             rescue
-              MultiXml.parse(response, symbolize_keys: true)
+              MultiXml.parse(response, symbolize_keys: true) rescue response
             end
           when 400
             raise Bamboozled::BadRequest.new(response, params, 'The request was invalid or could not be understood by the server. Resubmitting the request will likely result in the same error.')
